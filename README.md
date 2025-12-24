@@ -1,5 +1,8 @@
 # Sofia LiberNet - Interface React Moderna
 
+**SOFIA** = **S**istema **O**peracional de **F**uncionalidades **I**nteligentes **A**utônomas
+*(**S**mart **O**perational **F**ramework for **I**ntelligent **A**ssistance)*
+
 **Status:** 🟡 Frontend implementado, aguardando correção do backend
 
 ---
