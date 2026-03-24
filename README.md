@@ -1,25 +1,107 @@
-# Sofia LiberNet - Interface React Moderna
+<div align="center">
+
+# 🎨 Sofia Web React
+
+**Interface Moderna para Sofia AI** • **React + TypeScript + Tailwind**
+
+Frontend moderno e responsivo para a Sofia, a primeira IA nativa do protocolo Nostr.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![React](https://img.shields.io/badge/React-18+-61DAFB.svg?logo=react)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5+-3178C6.svg?logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind](https://img.shields.io/badge/Tailwind-3+-38B2AC.svg?logo=tailwind-css)](https://tailwindcss.com/)
+
+[Backend Principal](#-stack-tecnol%C3%B3gico) • [Instalação](#-instala%C3%A7%C3%A3o) • [Contribuir](#-como-contribuir)
+
+</div>
+
+---
+
+## 📋 Sobre
 
 **SOFIA** = **S**istema **O**peracional de **F**uncionalidades **I**nteligentes **A**utônomas
 *(**S**mart **O**perational **F**ramework for **I**ntelligent **A**ssistance)*
 
-**Status:** 🟡 Frontend implementado, aguardando correção do backend
+Este é o **frontend React moderno** para a [Sofia AI](https://github.com/lucianocasalunga/sofia-web), oferecendo uma interface limpa e responsiva inspirada em design Apple-style.
+
+### ✨ Características
+
+- 🎨 **Design Moderno** - Interface limpa inspirada em Apple
+- 🌓 **Dark/Light Mode** - Tema claro, escuro ou automático
+- 📱 **Totalmente Responsivo** - Desktop, tablet e mobile
+- ⚡ **Performance** - Vite + React 18 para máxima velocidade
+- 🔒 **TypeScript** - Type-safe em todo o código
+- 🎯 **Componentizado** - Arquitetura modular e reutilizável
 
 ---
 
-## 📋 O que foi feito
+## 🚀 Stack Tecnológico
 
-### ✅ Novo Frontend React + TypeScript
-- Interface moderna e responsiva com Tailwind CSS
-- Componentes modulares e reutilizáveis
-- Sistema de autenticação integrado
-- Chat em tempo real com histórico
-- Sidebars dinâmicas (conversas + painel de sessão)
-- Tema claro/escuro/sistema
-- Ícones Lucide (estilo Apple)
-- **TODOS OS MOCKS REMOVIDOS** - integração real com API
+### Frontend
+- **React 18** - Biblioteca UI moderna
+- **TypeScript 5** - Type safety
+- **Tailwind CSS 3** - Utility-first CSS
+- **Vite 5** - Build tool ultra-rápido
+- **Lucide Icons** - Ícones estilo Apple
 
-### 🗂️ Estrutura do projeto
+### Backend (Separado)
+- Veja: [sofia-web](https://github.com/lucianocasalunga/sofia-web)
+- Python 3.12 + Flask
+- GPT-4o (OpenAI)
+- Nostr + Lightning Network
+
+---
+
+## 📦 Instalação
+
+### Pré-requisitos
+- Node.js 18+ e npm
+- Backend Sofia rodando (veja [sofia-web](https://github.com/lucianocasalunga/sofia-web))
+
+### Passos
+
+```bash
+# Clone o repositório
+git clone https://github.com/lucianocasalunga/sofia-web-react.git
+cd sofia-web-react
+
+# Instale dependências
+npm install
+
+# Configure o ambiente (opcional)
+cp .env.example .env
+# Edite .env se o backend não estiver em localhost:5051
+
+# Rode em desenvolvimento
+npm run dev
+```
+
+Acesse: http://localhost:3000
+
+---
+
+## 🛠️ Scripts Disponíveis
+
+```bash
+# Desenvolvimento com hot reload
+npm run dev
+
+# Build para produção
+npm run build
+
+# Preview do build
+npm run preview
+
+# Lint do código
+npm run lint
+
+# Type check
+npm run type-check
+```
+
+---
+
+## 📁 Estrutura do Projeto
 
 ```
 sofia-web-react/
@@ -28,11 +110,11 @@ sofia-web-react/
 │   │   ├── auth/
 │   │   │   └── AuthContext.tsx      # Contexto de autenticação
 │   │   ├── chat/
-│   │   │   ├── chat-view.tsx        # Área de mensagens
+│   │   │   ├── chat-view.tsx        # Área principal de mensagens
 │   │   │   ├── chat-input.tsx       # Input com envio
 │   │   │   └── message-bubble.tsx   # Bolhas de mensagem
 │   │   ├── layout/
-│   │   │   ├── left-sidebar.tsx     # Sidebar de chats
+│   │   │   ├── left-sidebar.tsx     # Sidebar de conversas
 │   │   │   └── right-sidebar.tsx    # Painel de sessão
 │   │   └── ui/
 │   │       ├── sofia-logo.tsx       # Logo SVG Sofia
@@ -40,253 +122,178 @@ sofia-web-react/
 │   ├── lib/
 │   │   └── api.ts                   # Cliente API Flask
 │   ├── pages/
-│   │   ├── ChatPage.tsx             # Página principal
+│   │   ├── ChatPage.tsx             # Página principal do chat
 │   │   └── LoginPage.tsx            # Página de login
 │   ├── App.tsx                      # App principal
 │   ├── main.tsx                     # Entry point
 │   └── index.css                    # Estilos globais
+├── public/
+│   └── assets/                      # Imagens e ícones
 ├── package.json
-├── vite.config.ts                   # Config Vite + proxy
-├── tailwind.config.js
-└── tsconfig.json
+├── vite.config.ts                   # Configuração do Vite
+├── tailwind.config.js               # Configuração do Tailwind
+└── tsconfig.json                    # Configuração do TypeScript
 ```
 
 ---
 
-## 🔴 Por que Sofia não responde - Análise Técnica
+## 🎨 Features Implementadas
 
-### Problema raiz: Backend Flask com erro 401
+### ✅ Autenticação
+- [x] Login com Nostr (NIP-07)
+- [x] Login com nsec (chave privada)
+- [x] Gestão de sessão via JWT
+- [x] Logout seguro
 
-**Diagnóstico:**
-De acordo com a memória compartilhada (`/opt/memoria_sofia.md`), o backend Flask atual em `/mnt/projetos/sofia-web/` tem um problema persistente:
+### ✅ Chat
+- [x] Múltiplas conversas
+- [x] Mensagens em tempo real
+- [x] Upload de arquivos
+- [x] Histórico de mensagens
+- [x] Busca de conversas
 
-- **Erro:** `401 Unauthorized` nas chamadas de API
-- **Causa:** Flask-Login + Docker + Caddy Proxy não enviam cookies corretamente
-- **Rotas afetadas:** `/api/chats`, `/api/chats/{id}/message`
-- **Histórico:** Múltiplas tentativas de correção falharam (11/11/2025)
-
-**Tentativas anteriores (sem sucesso):**
-1. SECRET_KEY fixa no .env
-2. Configurações de sessão (PERMANENT_SESSION_LIFETIME, etc)
-3. CORS configurado com supports_credentials
-4. Decorator @api_login_required customizado
-5. credentials: 'include' em todos os fetch()
-6. SESSION_COOKIE_SAMESITE, HTTPONLY, DOMAIN configurados
-
-### Backend está funcional (parcialmente)
-
-**✅ O que funciona:**
-- Container `sofia-web` está rodando (porta 5051)
-- Health check: `/health` retorna OK
-- Autenticação via página web funciona
-- GPT-4o configurado e operacional
-- Sistema de ML implementado
-
-**❌ O que NÃO funciona:**
-- APIs REST retornam 401 quando chamadas via AJAX
-- Cookies de sessão não sendo enviados corretamente
-- Frontend não consegue se comunicar com backend
+### ✅ Interface
+- [x] Dark/Light mode
+- [x] Sidebars responsivas
+- [x] Animações suaves
+- [x] Loading states
+- [x] Error handling
 
 ---
 
-## 💡 Soluções Recomendadas
+## 🔗 Integração com Backend
 
-### Opção 1: Migrar para JWT (RECOMENDADO)
-**Por quê:** Flask-Login usa cookies de sessão que são problemáticos com Docker + Caddy + CORS
+O frontend se comunica com o backend Flask via API REST:
 
-**Como fazer:**
-1. Substituir Flask-Login por Flask-JWT-Extended
-2. Login retorna token JWT
-3. Frontend armazena token em localStorage
-4. Todas as requisições enviam `Authorization: Bearer <token>`
-5. Remove complexidade de cookies
+```typescript
+// src/lib/api.ts
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5051';
 
-**Vantagens:**
-- ✅ Resolve problema de cookies
-- ✅ Mais moderno e escalável
-- ✅ Funciona bem com SPA (Single Page Application)
-- ✅ Melhor para APIs REST
-
-### Opção 2: Reimplementar com FastAPI
-**Por quê:** FastAPI é mais moderno, performático e tem melhor suporte a async
-
-**Como fazer:**
-1. Reescrever backend em FastAPI (Python 3.10+)
-2. Usar JWT para autenticação
-3. Async/await para chamadas à OpenAI
-4. Pydantic para validação de dados
-
-**Vantagens:**
-- ✅ Performance superior
-- ✅ Documentação automática (OpenAPI)
-- ✅ Type hints nativos
-- ✅ Async suporte nativo
-
-### Opção 3: Simplificar - Remover autenticação (uso interno)
-**Por quê:** Se Sofia é só para uso interno de Barak
-
-**Como fazer:**
-1. Remover Flask-Login completamente
-2. APIs abertas (sem auth)
-3. Proteger com firewall/VPN ao invés de auth
-
-**Vantagens:**
-- ✅ Simplicidade máxima
-- ✅ Foco no core (IA)
-- ⚠️ Menos seguro (só para uso interno)
-
----
-
-## 🤖 Qual IA usar para Sofia?
-
-### Configuração Atual (RECOMENDADO MANTER)
-
-**Modelo:** `gpt-4o` (OpenAI)
-**Motivo:** Já está configurado e funcionando via TUI
-
-De acordo com `/mnt/projetos/sofia-web/app.py`:
-```python
-MODEL = os.getenv('SOFIA_MODEL', 'gpt-4o')
-client = openai.OpenAI(api_key=OPENAI_API_KEY)
+// Exemplos de endpoints:
+GET    /api/chats                 // Lista conversas
+POST   /api/chats                 // Nova conversa
+GET    /api/chats/:id/messages    // Mensagens de uma conversa
+POST   /api/chats/:id/message     // Envia mensagem
+POST   /api/auth/login            // Login
+POST   /api/auth/logout           // Logout
 ```
 
-**Características:**
-- ✅ GPT-4o é o modelo mais recente e capaz da OpenAI
-- ✅ Multimodal (texto + imagens)
-- ✅ 128k tokens de contexto
-- ✅ Melhor raciocínio que GPT-3.5
-- ✅ Sistema de ML implementado (embeddings + RAG)
-
-### Alternativas (caso queira considerar)
-
-#### 1. Claude (Anthropic) - via AWS Bedrock
-**Modelo:** claude-sonnet-4-5-20250929
-- Melhor para tarefas técnicas complexas
-- Contexto de 200k tokens
-- Mais caro que GPT-4o
-
-#### 2. GPT-4o-mini
-**Modelo:** gpt-4o-mini
-- Mais barato (15x)
-- Menor capacidade de raciocínio
-- Bom para tarefas simples
-
-#### 3. Modelos Open Source (Llama 3, Mistral)
-- Custo zero (roda local)
-- Requer GPU potente
-- Menor qualidade que GPT-4o
-
-### ⚠️ RECOMENDAÇÃO FINAL
-
-**Manter GPT-4o:**
-- Já está configurado e funcionando
-- Melhor custo-benefício para uso da Sofia
-- Sistema de ML (embeddings) já implementado
-- Só precisa corrigir autenticação do backend
-
 ---
 
-## 🚀 Como usar este frontend
+## 🚀 Deploy
 
-### Instalação
-
-```bash
-cd /mnt/projetos/sofia-web-react
-
-# Instalar dependências
-npm install
-
-# Rodar em desenvolvimento
-npm run dev
-# Acessa: http://localhost:3000
-```
-
-### Build para produção
+### Build para Produção
 
 ```bash
 npm run build
-# Arquivos gerados em dist/
 ```
 
-### Integração com Caddy
+Os arquivos otimizados estarão em `dist/`.
 
-Servir o build via Caddy reverse proxy:
+### Servir com Nginx/Caddy
+
+```nginx
+# Exemplo Nginx
+server {
+    listen 80;
+    server_name sofia.libernet.app;
+
+    root /path/to/sofia-web-react/dist;
+    index index.html;
+
+    # Proxy para API
+    location /api {
+        proxy_pass http://localhost:5051;
+    }
+
+    # SPA fallback
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+```
 
 ```caddy
+# Exemplo Caddy
 sofia.libernet.app {
-    # Frontend React
-    root * /mnt/projetos/sofia-web-react/dist
+    root * /path/to/sofia-web-react/dist
     file_server
 
-    # API proxy para Flask
     handle /api/* {
         reverse_proxy localhost:5051
     }
-    handle /health {
-        reverse_proxy localhost:5051
-    }
-    handle /login {
-        reverse_proxy localhost:5051
-    }
-    handle /logout {
-        reverse_proxy localhost:5051
-    }
+
+    try_files {path} /index.html
 }
 ```
 
 ---
 
-## 📝 Próximos Passos
+## 🤝 Como Contribuir
 
-### 1. Corrigir Backend (PRIORIDADE ALTA)
-- [ ] Implementar JWT no backend Flask OU
-- [ ] Migrar para FastAPI + JWT OU
-- [ ] Remover autenticação (uso interno)
+Contribuições são bem-vindas!
 
-### 2. Testar Frontend
-- [ ] `cd /mnt/projetos/sofia-web-react`
-- [ ] `npm install`
-- [ ] `npm run dev`
-- [ ] Testar login (backend deve estar funcionando)
+```bash
+# 1. Fork o projeto
+# 2. Crie uma branch
+git checkout -b feature/MinhaFeature
 
-### 3. Integração
-- [ ] Verificar rotas da API (`/api/chats`, `/api/chats/{id}/message`)
-- [ ] Testar envio de mensagens
-- [ ] Verificar histórico de chats
-- [ ] Confirmar memória compartilhada (`/opt/memoria_sofia.md`)
+# 3. Commit suas mudanças
+git commit -m 'feat: adiciona MinhaFeature'
 
-### 4. Deploy
-- [ ] Build: `npm run build`
-- [ ] Configurar Caddy
-- [ ] Testar em produção
+# 4. Push para a branch
+git push origin feature/MinhaFeature
 
----
+# 5. Abra um Pull Request
+```
 
-## 🛠️ Troubleshooting
-
-### Erro "Cannot connect to backend"
-- Verificar se container sofia-web está rodando: `docker ps | grep sofia`
-- Testar health check: `curl http://localhost:5051/health`
-
-### Erro 401 nas APIs
-- Problema conhecido (descrito acima)
-- Precisa implementar solução (JWT recomendado)
-
-### Frontend não carrega
-- Verificar porta 3000 não está em uso
-- Rodar `npm run dev` com logs
+### Diretrizes
+- Use commits semânticos (feat, fix, docs, style, refactor, test, chore)
+- Siga o estilo de código do projeto (ESLint + Prettier)
+- Adicione testes quando aplicável
+- Atualize a documentação
 
 ---
 
-## 📄 Arquivos Importantes
+## 📝 Licença
 
-- **Backend Flask:** `/mnt/projetos/sofia-web/`
-- **Frontend React:** `/mnt/projetos/sofia-web-react/`
-- **Memória Sofia:** `/opt/memoria_sofia.md`
-- **Logs Sofia:** `docker logs sofia-web`
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 ---
 
-**Desenvolvido por:** Claude (IA Engenheira LiberNet)
-**Data:** 2025-11-13
-**Status:** Frontend pronto, aguardando correção de backend
+## 🌐 Links
+
+- **Backend Sofia:** https://github.com/lucianocasalunga/sofia-web
+- **Demo ao Vivo:** https://sofia.libernet.app
+- **LiberNet:** https://libernet.app
+- **Nostr:** npub1wap4j2pxu4sa5l2q7yyah0wxdtqmzh40zv63vhw3r4prgnk826fsn0rc6a
+
+---
+
+## 👨‍💻 Autor
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://avatars.githubusercontent.com/u/83137464?v=4" width="100px;" alt="Barak"/><br />
+      <sub><b>Barak (Luciano)</b></sub><br />
+      <sub>Desenvolvedor Principal</sub>
+    </td>
+    <td align="center">
+      <sub><b>Claude (Sofia)</b></sub><br />
+      <sub>IA Engenheira</sub>
+    </td>
+  </tr>
+</table>
+
+---
+
+<div align="center">
+
+**Sofia Web React** - Desenvolvido com 💜 para a comunidade Nostr
+
+*Frontend moderno para a IA mais livre do protocolo*
+
+[![LiberNet](https://img.shields.io/badge/LiberNet-Ecosystem-8B5CF6?style=for-the-badge)](https://libernet.app)
+
+</div>
