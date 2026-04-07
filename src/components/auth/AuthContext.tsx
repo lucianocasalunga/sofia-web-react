@@ -1,19 +1,24 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import * as api from "../../lib/api";
 
-interface User {
+export interface User {
   id: string;
   name: string;
-  email: string;
+  npub: string;
   role: string;
   plan: string;
+  tokens_used?: number;
+  token_balance?: number;
 }
 
 interface AuthContextValue {
   currentUser: User | null;
-  login: (email: string, password: string) => Promise<boolean>;
+  loginWithExtension: () => Promise<boolean>;
+  loginWithNsec: (nsec: string) => Promise<boolean>;
   logout: () => Promise<void>;
   isLoading: boolean;
+  error: string | null;
+  clearError: () => void;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -21,22 +26,55 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Verificar se usuário já está autenticado
+    // Verificar sessão existente (manter logado)
     api.getCurrentUser().then(user => {
-      setCurrentUser(user);
+      setCurrentUser(user as User | null);
       setIsLoading(false);
     });
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
-    const user = await api.login(email, password);
-    if (user) {
-      setCurrentUser(user);
-      return true;
+  const loginWithExtension = async (): Promise<boolean> => {
+    setError(null);
+    try {
+      const user = await api.loginNostrExtension();
+      if (user) {
+        setCurrentUser(user as User);
+        return true;
+      }
+      setError("Falha ao conectar com o relay. Tente novamente.");
+      return false;
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Erro desconhecido";
+      if (msg.includes("não encontrada")) {
+        setError("Extensão Nostr não detectada. Instale Alby ou nos2x.");
+      } else {
+        setError(msg);
+      }
+      return false;
     }
-    return false;
+  };
+
+  const loginWithNsec = async (nsec: string): Promise<boolean> => {
+    setError(null);
+    try {
+      if (!nsec.startsWith("nsec1")) {
+        setError("Chave inválida. Deve começar com nsec1...");
+        return false;
+      }
+      const user = await api.loginNostrNsec(nsec);
+      if (user) {
+        setCurrentUser(user as User);
+        return true;
+      }
+      setError("Chave inválida ou erro no servidor.");
+      return false;
+    } catch {
+      setError("Erro ao validar chave. Tente novamente.");
+      return false;
+    }
   };
 
   const logout = async () => {
@@ -44,8 +82,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCurrentUser(null);
   };
 
+  const clearError = () => setError(null);
+
   return (
-    <AuthContext.Provider value={{ currentUser, login, logout, isLoading }}>
+    <AuthContext.Provider value={{
+      currentUser,
+      loginWithExtension,
+      loginWithNsec,
+      logout,
+      isLoading,
+      error,
+      clearError,
+    }}>
       {children}
     </AuthContext.Provider>
   );

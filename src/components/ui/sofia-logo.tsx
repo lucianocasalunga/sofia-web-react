@@ -16,17 +16,15 @@ export const SofiaLogo: React.FC<SofiaLogoProps> = ({ className = "w-8 h-8" }) =
         cx="12"
         cy="12"
         r="10"
-        stroke="currentColor"
+        stroke="#34d399"
         strokeWidth="2"
-        className="text-emerald-400"
       />
       <path
         d="M8 12L10.5 14.5L16 9"
-        stroke="currentColor"
+        stroke="#34d399"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="text-emerald-400"
       />
     </svg>
   );
