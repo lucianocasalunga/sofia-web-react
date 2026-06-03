@@ -1,6 +1,66 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.jsx'
+
+function MatrixBackground() {
+  const canvasRef = useRef(null)
+
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (isMobile || prefersReducedMotion) return
+
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    const resize = () => {
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+    }
+    resize()
+    window.addEventListener('resize', resize)
+
+    const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+    const fontSize = 14
+    const cols = Math.floor(canvas.width / fontSize)
+    const drops = []
+    for (let i = 0; i < cols; i++) drops[i] = Math.random() * -100
+
+    let raf
+    const draw = () => {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.font = `${fontSize}px monospace`
+      for (let i = 0; i < drops.length; i++) {
+        const char = chars[Math.floor(Math.random() * chars.length)]
+        const x = i * fontSize
+        const y = drops[i] * fontSize
+        const alpha = Math.random() * 0.5 + 0.1
+        ctx.fillStyle = `rgba(16, 185, 129, ${alpha})`
+        ctx.fillText(char, x, y)
+        if (y > canvas.height && Math.random() > 0.975) drops[i] = 0
+        drops[i] += 0.5
+      }
+      raf = requestAnimationFrame(draw)
+    }
+    draw()
+
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('resize', resize)
+    }
+  }, [])
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 pointer-events-none"
+      style={{ zIndex: 0, opacity: 0.6 }}
+    />
+  )
+}
 
 export default function Login() {
   const { loginExtension, loginNsec } = useAuth()
@@ -37,8 +97,9 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-sofia-bg flex items-center justify-center p-4"
       style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(16,185,129,0.08) 0%, #020617 60%)' }}>
+      <MatrixBackground />
 
-      <div className="w-full max-w-sm">
+      <div className="w-full max-w-sm" style={{ position: 'relative', zIndex: 1 }}>
         {/* Logo */}
         <div className="flex flex-col items-center mb-8">
           <div className="w-20 h-20 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mb-4 shadow-[0_0_40px_-8px_rgba(16,185,129,0.4)] overflow-hidden">
