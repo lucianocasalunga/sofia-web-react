@@ -5,10 +5,11 @@ import Sidebar from '../components/Sidebar'
 import { useChats } from '../hooks/useChats.jsx'
 
 const DEFAULT_RELAYS = [
+  'wss://nexus.libernet.app',
+  'wss://relay.libernet.app',
   'wss://relay.damus.io',
   'wss://relay.primal.net',
   'wss://nos.lol',
-  'wss://relay.libernet.app',
 ]
 
 export default function Configuracoes() {

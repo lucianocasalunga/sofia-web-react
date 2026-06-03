@@ -150,6 +150,11 @@ export default function Chat() {
           <p className="text-xs text-slate-600 text-center mt-2">Sofia pode cometer erros. Verifique informações importantes.</p>
         </div>
       </div>
+
+      {/* Sidebar direita */}
+      <div className="hidden lg:flex w-64 flex-shrink-0 border-l border-slate-800 flex-col">
+        <div className="flex-1" />
+      </div>
     </div>
   )
 }
